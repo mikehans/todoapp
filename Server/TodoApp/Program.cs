@@ -11,9 +11,13 @@ builder.Services.AddSingleton<IDataAccess, FakeDataAccess>();
 
 builder.AddOpenApiSetup();
 
+builder.AddNgServeDevCorsServices();
+
 var app = builder.Build();
 
 app.ConfigureWebApiForDevelopment();
+
+app.UseNgServeDevCorsServices();
 
 app.UseHttpsRedirection();
 
