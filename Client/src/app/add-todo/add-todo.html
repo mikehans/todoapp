@@ -1,0 +1,16 @@
+<form [formGroup]="newTodoForm" (ngSubmit)="handleSubmit()" class="todoForm">
+  <mat-form-field>
+    <mat-label>Add a todo</mat-label>
+    <input matInput placeholder="Type here" formControlName="title" />
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Description (optional)</mat-label>
+    <input
+      matInput
+      placeholder="Add a description"
+      formControlName="description"
+    />
+  </mat-form-field>
+
+  <button type="submit" matButton filled>Add</button>
+</form>

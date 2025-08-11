@@ -1,0 +1,13 @@
+.todoForm{
+  display: flex;
+  flex-direction: column;
+  width: 95vw;
+}
+
+
+
+@media screen and (width > 750px) {
+  .todoForm{
+    width: 700px;
+  }
+}

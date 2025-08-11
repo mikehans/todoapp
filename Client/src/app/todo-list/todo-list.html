@@ -1,0 +1,18 @@
+<h2>Add a todo</h2>
+<app-add-todo (todoAdded)="onAddTodo($event)"></app-add-todo>
+
+<h2>Current Todos</h2>
+@for(item of listItems; track item.id){
+<mat-card class="todoItem">
+  <mat-card-title-group>
+    <mat-card-title>{{item.title}}</mat-card-title>
+  </mat-card-title-group>
+  <mat-card-content> {{item.description}} </mat-card-content>
+  <mat-card-actions align="end">
+    <mat-slide-toggle (change)="slideToggleChanged($event, item.id)">
+       @if(item.isCompleted){ Completed } @else { To be done }
+    </mat-slide-toggle>
+  </mat-card-actions>
+</mat-card>
+}
+
