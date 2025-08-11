@@ -22,14 +22,16 @@ public class TodoService : ITodoService
         return await _dataAccess.GetOne(id);
     }
 
-    public async Task<List<Todo>> MarkSelectionsComplete(List<Todo> todos)
+    public async Task<bool> ToggleComplete(int id)
     {
-        return await _dataAccess.MarkComplete(todos);
+        var item = await _dataAccess.ToggleComplete(id);
+
+        return item;
     }
 
-    public async Task<Todo> MarkOneComplete(Todo todo)
+    public async Task<int> AddTodo(Todo todo)
     {
-        var returneditems = await _dataAccess.MarkComplete(new List<Todo> { todo });
-        return returneditems.FirstOrDefault();
+        var id = await _dataAccess.AddTodo(todo);
+        return id;
     }
 }

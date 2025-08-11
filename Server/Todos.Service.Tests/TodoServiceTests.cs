@@ -23,7 +23,7 @@ public class TodoServiceTests
     }
 
     [Test]
-    public void GetById_ShouldReturnOneTodoSelectedById()
+    public void GetById_ShouldReturnOneTodo()
     {
         var todo = Task.WhenAll(sut.GetById(1)).Result.First();
 
@@ -31,12 +31,11 @@ public class TodoServiceTests
     }
 
     [Test]
-    public void MarkOneComplete_ShouldReturnOneCompletedTodo()
+    public void GetById_ShouldReturnTodoWithDefaultIdWhenIdNotInDataSource()
     {
-        var todoToBeCompleted = new Todo() { Id = 2, Title = "" };
-        var completedTodo = Task.WhenAll(sut.MarkOneComplete(todoToBeCompleted)).Result.First();
+        var todo = Task.WhenAll(sut.GetById(111111111)).Result.First();
 
-        Assert.That(completedTodo, Has.Property("IsComplete").True);
-        Assert.That(completedTodo, Has.Property("CompletedDateTime").Not.Null);
+        Assert.That(todo, Has.Property("Id").EqualTo(-1));
     }
+
 }

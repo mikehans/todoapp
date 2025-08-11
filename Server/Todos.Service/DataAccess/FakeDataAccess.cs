@@ -16,14 +16,12 @@ public class FakeDataAccess : IDataAccess
                 Id = 1,
                 Title = "Todo 1",
                 Description = "Description 1 is due in the future",
-                DueDateTime = DateTime.Now.AddDays(2),
             },
             new Todo()
             {
                 Id = 2,
                 Title = "Todo 2",
                 Description = "Description 2 is overdue",
-                DueDateTime = DateTime.Now.AddDays(-1),
             }
         };
     }
@@ -45,19 +43,22 @@ public class FakeDataAccess : IDataAccess
     public Task<Todo> GetOne(int id)
     {
         var firstResult = _todos.FirstOrDefault(t => t.Id == id);
-        var result = firstResult ?? new Todo() { Id = -1, Title = "-" };
+        var result = firstResult ?? new Todo() { Id = -1, Title = "" };
 
         return Task.FromResult(result);
     }
 
-    public Task<List<Todo>> MarkComplete(List<Todo> todosToMarkComplete)
+    public Task<bool> ToggleComplete(int id)
     {
-        _todos.ForEach(t =>
+        var foundTodo = _todos.Find(t => t.Id == id);
+        if (foundTodo != null)
         {
-            t.IsComplete = true;
-            t.CompletedDateTime = DateTime.Now;
-        });
-
-        return Task.FromResult(_todos);
+            foundTodo.IsComplete = !foundTodo.IsComplete;
+            return Task.FromResult(true);
+        }
+        else
+        {
+            return Task.FromResult(false);
+        }
     }
 }
