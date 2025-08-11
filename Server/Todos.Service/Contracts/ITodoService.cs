@@ -6,6 +6,6 @@ public interface ITodoService
 {
     Task<List<Todo>> GetAll();
     Task<Todo> GetById(int id);
-    Task<bool> ToggleComplete(int id);
-    Task<int> AddTodo(Todo todo);
+    Task<Todo> ToggleComplete(int id);
+    Task<Todo> AddTodo(Todo todo);
 }

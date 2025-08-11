@@ -38,4 +38,18 @@ public class TodoServiceTests
         Assert.That(todo, Has.Property("Id").EqualTo(-1));
     }
 
+    [Test]
+    public void ToggleComplete_ShouldSetIsCompleteTrueWhenTodoExistsAndIsCompleteIsFalse()
+    {
+        var todo = Task.WhenAll(sut.ToggleComplete(1)).Result.First();
+        Assert.That(todo.IsComplete, Is.True);
+    }
+
+    [Test]
+    public void ToggleComplete_ShouldReturnTodoWithDefaultIdWhenNotFound()
+    {
+        var todo = Task.WhenAll(sut.ToggleComplete(99)).Result.First();
+        Assert.That(todo.Id, Is.EqualTo(-1));
+    }
+
 }

@@ -40,23 +40,25 @@ public static class TodoRoutes
         }
     }
 
-    public async static Task<IResult> ToggleComplete(int id, ITodoService svc)
+    public async static Task<IResult> ToggleComplete(int id, ITodoService svc, HttpRequest req)
     {
         var completed = await svc.ToggleComplete(id);
-        if (completed == false)
+        if (completed.Id == -1)
         {
             return Results.NotFound();
         }
         else
         {
-            return Results.Ok(completed);
+            var addr = req.Scheme + "://" + req.Host.Value + req.Path.Value;
+            return Results.Ok(addr);
         }
     }
 
-    public async static Task<IResult> AddTodo(Todo newTodo, ITodoService svc)
+    public async static Task<IResult> AddTodo(Todo newTodo, ITodoService svc, HttpRequest req)
     {
-        await svc.AddTodo(newTodo);
-
-        return Results.Created();
+        var id = await svc.AddTodo(newTodo);
+        var addr = req.Scheme + "://" + req.Host.Value + req.Path.Value + "/" + id;
+         
+        return Results.Created(addr, newTodo);
     }
 }
