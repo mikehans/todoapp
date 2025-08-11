@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { AddTodo } from '../add-todo/add-todo';
 import { TodoModel } from '../models/todo-model';
 import { MaterialModule } from '../material/material-module';
+import { ApiService } from '../services/api.service';
 
 @Component({
   selector: 'app-todo-list',
@@ -10,35 +11,48 @@ import { MaterialModule } from '../material/material-module';
   styleUrl: './todo-list.scss',
 })
 export class TodoList {
-  listItems: TodoModel[] = [
-    {
-      id: 1,
-      title: 'Add a todo',
-      description: 'You have to start somewhere',
-    },
-    {
-      id: 2,
-      title: 'Mark "Add a todo" (and also this todo) as done',
-    },
-  ];
+  listItems: TodoModel[] = [];
 
-  onAddTodo(newTodo: TodoModel): void {
-    let nextId = Math.max(...this.listItems.map((it) => it.id)) + 1;
 
-    this.listItems.push({ ...newTodo, id: nextId });
+  constructor(private api:ApiService){}
+
+  ngOnInit(): void {
+    this.api.getAll().subscribe({
+      next: (value: TodoModel[]) => {
+        this.listItems = value;
+        console.log('this.listItems', this.listItems)
+      },
+      error: (err) => console.log('err', err)
+    });
   }
 
-  completeTask(isComplete: boolean, id: number): void {
-    const item = this.listItems.find((it) => it.id == id);
-    if (item) {
-      item.isCompleted = !item.isCompleted;
-    }
+  onAddTodo(newTodo: TodoModel): void {
+    this.api.addTodo(newTodo).subscribe({
+      next: (value: TodoModel) => {
+        console.log('add todo value', value);
+        this.listItems.push(value);
+      },
+      error: (err: any) => console.log('err', err)
+    });
+  }
+
+  completeTask(id: number): void {
+    console.log('called completetask with id:', id)
+    this.api.toggleComplete(id).subscribe({
+      next: (value: any) => {
+        console.log('completeTask value', value);
+      },
+      error: (err: any) => console.log('err', err)
+    })
   }
 
   slideToggleChanged(ev: any, id: number): void {
     const item = this.listItems.find((it) => it.id == id);
     if (item) {
-      item.isCompleted = !item.isCompleted;
+      // item.isCompleted = !item.isCompleted;
+      this.completeTask(id);
     }
   }
+
+
 }

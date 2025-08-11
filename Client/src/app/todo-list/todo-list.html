@@ -9,8 +9,8 @@
   </mat-card-title-group>
   <mat-card-content> {{item.description}} </mat-card-content>
   <mat-card-actions align="end">
-    <mat-slide-toggle (change)="slideToggleChanged($event, item.id)">
-       @if(item.isCompleted){ Completed } @else { To be done }
+    <mat-slide-toggle [checked]="item.isComplete" (change)="slideToggleChanged($event, item.id)">
+       @if(item.isComplete){ Completed } @else { To be done }
     </mat-slide-toggle>
   </mat-card-actions>
 </mat-card>
